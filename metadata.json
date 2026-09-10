@@ -1,0 +1,6 @@
+{
+  "name": "E.M SAFETY | Consulenze e Formazioni",
+  "description": "Portale istituzionale di E.M Safety per la consulenza sulla sicurezza sul lavoro D.Lgs 81/08, Sistemi di Gestione Integrati (SGI) e catalogo corsi di formazione accreditati a Treviso e Milano.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
