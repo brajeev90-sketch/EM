@@ -1,37 +1,41 @@
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { FAQ_DATA } from '../data/coursesData';
+import { soundFX } from '../utils/audio';
 
 export default function FaqSection() {
   const [openId, setOpenId] = useState<string | null>(null);
 
   const toggleFaq = (id: string) => {
+    soundFX.playLaser();
     setOpenId((prev) => (prev === id ? null : id));
   };
 
   return (
-    <section className="w-full bg-[#F9FAF8] py-16 lg:py-20 border-b border-[#E5E7EB]">
-      <div className="max-w-[1280px] mx-auto px-4 lg:px-8">
+    <section className="w-full bg-slate-50/60 py-16 lg:py-24 border-b border-slate-200 relative z-10">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="font-sans text-[11px] font-bold text-[#5E8276] uppercase tracking-widest block mb-2">
-            Chiarezza &amp; Trasparenza
-          </span>
-          <h2 className="font-serif text-[32px] sm:text-[38px] text-[#00271e] font-medium mb-3 tracking-tight">
-            Domande frequenti sulla consulenza e formazione
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-blue-50 text-[#0b2545] rounded-full text-[12px] font-sans font-bold uppercase tracking-widest mb-3 border border-blue-200 shadow-2xs">
+            <span className="w-2 h-2 rounded-full bg-amber-500" />
+            <span>FAQ &amp; CHIARIMENTI NORMATIVI</span>
+          </div>
+          <h2 className="font-serif text-[32px] sm:text-[42px] text-[#0b2545] font-bold mb-3 tracking-tight">
+            Domande frequenti su consulenza e scadenze
           </h2>
-          <p className="font-sans text-[15px] text-[#414945]">
+          <p className="font-sans text-[16px] text-slate-600 leading-relaxed">
             Le risposte operative alle principali richieste che riceviamo quotidianamente da responsabili HR, RSPP e amministratori delegati.
           </p>
         </div>
 
         {/* Accordion List */}
-        <div className="max-w-3xl mx-auto space-y-3">
+        <div className="max-w-3xl mx-auto space-y-3.5">
           {FAQ_DATA.map((faq) => {
             const isOpen = openId === faq.id;
             return (
-              <div
+              <motion.div
                 key={faq.id}
-                className="bg-white rounded-lg shadow-sm border border-[#E5E7EB] overflow-hidden transition-all duration-200 hover:border-[#5E8276]"
+                className="bg-white rounded-2xl border border-slate-200 hover:border-blue-300 overflow-hidden transition-all shadow-sm"
               >
                 <button
                   type="button"
@@ -39,24 +43,34 @@ export default function FaqSection() {
                   aria-expanded={isOpen}
                   className="w-full p-6 flex items-center justify-between text-left gap-4 focus:outline-none cursor-pointer"
                 >
-                  <span className="font-sans text-[16px] sm:text-[17px] leading-snug text-[#00271e] font-bold">
+                  <span className="font-serif text-[17px] sm:text-[18px] leading-snug text-[#0b2545] font-bold">
                     {faq.question}
                   </span>
                   <div
-                    className={`w-7 h-7 rounded-full bg-[#F2F5F2] flex items-center justify-center text-[#5E8276] flex-shrink-0 transition-transform duration-200 ${
-                      isOpen ? 'rotate-180 bg-[#b5ede7] text-[#00201e]' : ''
+                    className={`w-8 h-8 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-[#0b2545] flex-shrink-0 transition-transform duration-200 ${
+                      isOpen ? 'rotate-180 bg-[#0b2545] text-amber-400 border-[#0b2545]' : ''
                     }`}
                   >
                     <ChevronDown className="w-4 h-4" />
                   </div>
                 </button>
 
-                {isOpen && (
-                  <div className="px-6 pb-6 text-[#414945] font-sans text-[14px] sm:text-[15px] leading-relaxed border-t border-[#E5E7EB]/50 pt-4 animate-in fade-in-50">
-                    <p>{faq.answer}</p>
-                  </div>
-                )}
-              </div>
+                <AnimatePresence>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-6 pb-6 text-slate-600 font-sans text-[14.5px] leading-relaxed border-t border-slate-100 pt-4">
+                        <p>{faq.answer}</p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             );
           })}
         </div>

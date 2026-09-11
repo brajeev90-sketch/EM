@@ -1,6 +1,8 @@
 import { useState, FormEvent } from 'react';
 import { X, Calendar, MapPin, CheckCircle2, ShieldCheck, Clock, Send, Award } from 'lucide-react';
+import { motion } from 'motion/react';
 import { Course } from '../types';
+import { soundFX } from '../utils/audio';
 
 interface CourseModalProps {
   course: Course | null;
@@ -24,13 +26,15 @@ export default function CourseModal({
 
   const handleBooking = (e: FormEvent) => {
     e.preventDefault();
+    soundFX.playLaser();
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
       setConfirmed(true);
+      soundFX.playChime();
       setTimeout(() => {
         onBookingSuccess(course.title);
-      }, 1500);
+      }, 1400);
     }, 600);
   };
 
@@ -38,22 +42,30 @@ export default function CourseModal({
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in-50"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200"
     >
-      <div className="bg-white rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto border border-[#E5E7EB] flex flex-col">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 15 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 15 }}
+        className="bg-white rounded-3xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto border border-slate-200 flex flex-col text-slate-800"
+      >
         {/* Modal Top Bar */}
-        <div className="sticky top-0 bg-white/95 backdrop-blur-md px-6 py-4 border-b border-[#E5E7EB] flex items-center justify-between z-10">
+        <div className="sticky top-0 bg-white/95 backdrop-blur-md px-6 py-4 border-b border-slate-200 flex items-center justify-between z-10">
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-1 bg-[#b5ede7] text-[#00201e] font-sans text-[11px] font-bold rounded">
+            <span className="px-3 py-1 bg-blue-50 text-[#0b2545] border border-blue-200 font-sans text-[11.5px] font-bold rounded-lg uppercase tracking-wider">
               {course.badge}
             </span>
-            <span className="font-sans text-[12px] text-[#717975]">
+            <span className="font-sans text-[12.5px] text-slate-500 font-semibold">
               {course.legalRef}
             </span>
           </div>
           <button
-            onClick={onClose}
-            className="p-1.5 text-[#717975] hover:text-[#00271e] hover:bg-[#F2F5F2] rounded-lg transition-colors cursor-pointer"
+            onClick={() => {
+              soundFX.playBeep(450);
+              onClose();
+            }}
+            className="p-2 text-slate-400 hover:text-[#0b2545] hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
             aria-label="Chiudi scheda corso"
           >
             <X className="w-5 h-5" />
@@ -63,52 +75,52 @@ export default function CourseModal({
         {/* Modal Body */}
         <div className="p-6 sm:p-8 space-y-6">
           <div>
-            <span className="font-sans text-[11px] font-bold text-[#5E8276] uppercase tracking-wider block mb-1">
+            <span className="font-sans text-[11px] font-bold text-amber-700 uppercase tracking-wider block mb-1">
               {course.categoryLabel}
             </span>
-            <h2 className="font-serif text-[26px] sm:text-[32px] text-[#00271e] font-semibold leading-tight">
+            <h2 className="font-serif text-[26px] sm:text-[32px] text-[#0b2545] font-bold leading-tight">
               {course.title}
             </h2>
-            <p className="font-sans text-[15px] text-[#414945] mt-2 leading-relaxed">
+            <p className="font-sans text-[15.5px] text-slate-600 mt-2 leading-relaxed">
               {course.description}
             </p>
           </div>
 
           {/* Key Facts */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 bg-[#F9FAF8] rounded-lg border border-[#E5E7EB]">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-200">
             <div className="flex items-center gap-3">
-              <Clock className="w-5 h-5 text-[#5E8276]" />
+              <Clock className="w-5 h-5 text-blue-600" />
               <div>
-                <span className="font-sans text-[11px] text-[#717975] block">Durata Totale</span>
-                <span className="font-sans text-[13px] font-bold text-[#00271e]">{course.duration}</span>
+                <span className="font-sans text-[11px] text-slate-500 font-bold block uppercase">DURATA TOTALE</span>
+                <span className="font-serif text-[15px] font-bold text-[#0b2545]">{course.duration}</span>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Calendar className="w-5 h-5 text-[#5E8276]" />
+              <Calendar className="w-5 h-5 text-amber-600" />
               <div>
-                <span className="font-sans text-[11px] text-[#717975] block">Prossima Sessione</span>
-                <span className="font-sans text-[13px] font-bold text-[#00271e]">{course.nextDate}</span>
+                <span className="font-sans text-[11px] text-slate-500 font-bold block uppercase">PROSSIMA SESSIONE</span>
+                <span className="font-serif text-[15px] font-bold text-[#0b2545]">{course.nextDate}</span>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <MapPin className="w-5 h-5 text-[#5E8276]" />
+              <MapPin className="w-5 h-5 text-blue-700" />
               <div>
-                <span className="font-sans text-[11px] text-[#717975] block">Sede / Modalità</span>
-                <span className="font-sans text-[13px] font-bold text-[#00271e]">{course.location}</span>
+                <span className="font-sans text-[11px] text-slate-500 font-bold block uppercase">SEDE / MODALITÀ</span>
+                <span className="font-serif text-[15px] font-bold text-[#0b2545]">{course.location}</span>
               </div>
             </div>
           </div>
 
           {/* Program Syllabus */}
           <div>
-            <h3 className="font-sans text-[16px] font-bold text-[#00271e] mb-3 flex items-center gap-2">
-              <Award className="w-4 h-4 text-[#5E8276]" />
-              <span>Programma Didattico Ministeriale</span>
+            <h3 className="font-sans text-[13px] font-bold text-[#0b2545] mb-3 flex items-center gap-2 uppercase tracking-wider">
+              <Award className="w-4 h-4 text-amber-600" />
+              <span>PROGRAMMA DIDATTICO MINISTERIALE</span>
             </h3>
             <ul className="space-y-2">
               {course.program.map((item, idx) => (
-                <li key={idx} className="flex items-start gap-2.5 font-sans text-[13px] text-[#414945]">
-                  <CheckCircle2 className="w-4 h-4 text-[#5E8276] flex-shrink-0 mt-0.5" />
+                <li key={idx} className="flex items-start gap-2.5 font-sans text-[14px] text-slate-700">
+                  <CheckCircle2 className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
                   <span>{item}</span>
                 </li>
               ))}
@@ -117,33 +129,33 @@ export default function CourseModal({
 
           {/* Prerequisites and Accreditation */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-            <div className="p-4 bg-[#F2F5F2] rounded-lg border border-[#D1E0D7]">
-              <span className="font-sans text-[11px] font-bold text-[#0f3e32] uppercase tracking-wider block mb-1">
-                Destinatari &amp; Prerequisiti
+            <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200">
+              <span className="font-sans text-[11px] font-bold text-[#0b2545] uppercase tracking-wider block mb-1">
+                DESTINATARI &amp; PREREQUISITI
               </span>
-              <p className="font-sans text-[13px] text-[#414945] leading-relaxed">
+              <p className="font-sans text-[13.5px] text-slate-600 leading-relaxed">
                 {course.prerequisites}
               </p>
             </div>
-            <div className="p-4 bg-[#FBF5E6] rounded-lg border border-[#D1A751]/30">
-              <span className="font-sans text-[11px] font-bold text-[#946E19] uppercase tracking-wider block mb-1">
-                Certificazione &amp; Attestato
+            <div className="p-4 bg-slate-50 rounded-2xl border border-amber-200">
+              <span className="font-sans text-[11px] font-bold text-amber-800 uppercase tracking-wider block mb-1">
+                CERTIFICAZIONE &amp; ATTESTATO
               </span>
-              <p className="font-sans text-[13px] text-[#414945] leading-relaxed">
+              <p className="font-sans text-[13.5px] text-slate-600 leading-relaxed">
                 {course.certification}
               </p>
             </div>
           </div>
 
           {/* Quick Seat Reservation Form */}
-          <div className="p-6 bg-[#F9FAF8] rounded-xl border border-[#E5E7EB]">
+          <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200">
             {confirmed ? (
               <div className="text-center py-4 space-y-2">
-                <CheckCircle2 className="w-10 h-10 text-[#0f3e32] mx-auto" />
-                <h4 className="font-sans text-[18px] font-bold text-[#00271e]">
+                <CheckCircle2 className="w-12 h-12 text-amber-500 mx-auto" />
+                <h4 className="font-serif text-[20px] font-bold text-[#0b2545]">
                   Iscrizione preliminare registrata!
                 </h4>
-                <p className="font-sans text-[13px] text-[#414945]">
+                <p className="font-sans text-[14px] text-slate-600">
                   La segreteria didattica ti contatterà per l'invio dei moduli anagrafici dei partecipanti.
                 </p>
               </div>
@@ -151,19 +163,19 @@ export default function CourseModal({
               <form onSubmit={handleBooking} className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="font-sans text-[16px] font-bold text-[#00271e]">
+                    <h4 className="font-serif text-[18px] font-bold text-[#0b2545]">
                       Prenota posti per questa sessione
                     </h4>
-                    <span className="font-sans text-[12px] text-[#717975]">
+                    <span className="font-sans text-[12px] text-slate-500">
                       Nessun pagamento anticipato richiesto adesso
                     </span>
                   </div>
-                  <ShieldCheck className="w-6 h-6 text-[#5E8276]" />
+                  <ShieldCheck className="w-6 h-6 text-blue-600" />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block font-sans text-[12px] font-semibold text-[#00271e] mb-1">
+                    <label className="block font-sans text-[11px] font-bold text-[#0b2545] mb-1 uppercase">
                       Ragione Sociale Azienda *
                     </label>
                     <input
@@ -172,11 +184,11 @@ export default function CourseModal({
                       placeholder="Es. Officine Meccaniche Srl"
                       value={companyName}
                       onChange={(e) => setCompanyName(e.target.value)}
-                      className="w-full px-3 py-2 bg-white rounded font-sans text-[13px] text-[#141b2b] border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#0f3e32]"
+                      className="w-full px-3.5 py-2.5 bg-white rounded-xl font-sans text-[13.5px] text-slate-800 border border-slate-200 focus:border-[#0b2545] focus:outline-none"
                     />
                   </div>
                   <div>
-                    <label className="block font-sans text-[12px] font-semibold text-[#00271e] mb-1">
+                    <label className="block font-sans text-[11px] font-bold text-[#0b2545] mb-1 uppercase">
                       Numero Partecipanti
                     </label>
                     <input
@@ -185,36 +197,36 @@ export default function CourseModal({
                       max={50}
                       value={attendees}
                       onChange={(e) => setAttendees(Number(e.target.value))}
-                      className="w-full px-3 py-2 bg-white rounded font-sans text-[13px] text-[#141b2b] border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#0f3e32]"
+                      className="w-full px-3.5 py-2.5 bg-white rounded-xl font-sans text-[13.5px] text-slate-800 border border-slate-200 focus:border-[#0b2545] focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block font-sans text-[12px] font-semibold text-[#00271e] mb-1">
-                      Email di Contatto *
+                    <label className="block font-sans text-[11px] font-bold text-[#0b2545] mb-1 uppercase">
+                      E-Mail Referente Formazione *
                     </label>
                     <input
                       type="email"
                       required
-                      placeholder="segreteria@azienda.it"
+                      placeholder="hr@azienda.it"
                       value={contactEmail}
                       onChange={(e) => setContactEmail(e.target.value)}
-                      className="w-full px-3 py-2 bg-white rounded font-sans text-[13px] text-[#141b2b] border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#0f3e32]"
+                      className="w-full px-3.5 py-2.5 bg-white rounded-xl font-sans text-[13.5px] text-slate-800 border border-slate-200 focus:border-[#0b2545] focus:outline-none"
                     />
                   </div>
                   <div>
-                    <label className="block font-sans text-[12px] font-semibold text-[#00271e] mb-1">
-                      Telefono Diretto *
+                    <label className="block font-sans text-[11px] font-bold text-[#0b2545] mb-1 uppercase">
+                      Telefono Referente *
                     </label>
                     <input
                       type="tel"
                       required
-                      placeholder="+39 345 0000000"
+                      placeholder="+39 340 0000000"
                       value={contactPhone}
                       onChange={(e) => setContactPhone(e.target.value)}
-                      className="w-full px-3 py-2 bg-white rounded font-sans text-[13px] text-[#141b2b] border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#0f3e32]"
+                      className="w-full px-3.5 py-2.5 bg-white rounded-xl font-sans text-[13.5px] text-slate-800 border border-slate-200 focus:border-[#0b2545] focus:outline-none"
                     />
                   </div>
                 </div>
@@ -222,22 +234,16 @@ export default function CourseModal({
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-2.5 bg-[#0f3e32] text-white font-sans text-[13px] font-semibold rounded hover:bg-[#00271e] transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3.5 px-4 bg-[#0b2545] hover:bg-[#07192e] text-white font-sans text-[13.5px] font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer border-b-2 border-amber-400"
                 >
-                  {isSubmitting ? (
-                    <span>Registrazione in corso...</span>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4" />
-                      <span>Blocca {attendees} Posti per la data del {course.nextDate}</span>
-                    </>
-                  )}
+                  <Send className="w-4 h-4 text-amber-400" />
+                  <span>Conferma Richiesta Iscrizione</span>
                 </button>
               </form>
             )}
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

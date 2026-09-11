@@ -25,57 +25,64 @@ export default function Footer({ onNavigate, onOpenLegalModal }: FooterProps) {
   };
 
   return (
-    <footer className="w-full bg-[#f4f7f4] text-[#0d2119] border-t border-[#d8e2dc]">
-      <div className="max-w-[1280px] mx-auto px-4 lg:px-8 pt-16 pb-12">
+    <footer className="w-full bg-[#0b2545] text-slate-300 border-t-4 border-amber-400 relative z-10">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
         {/* Main Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 pb-12 border-b border-[#d8e2dc]">
-          {/* Col 1: Brand & Accreditation (5 cols) */}
-          <div className="lg:col-span-5 flex flex-col gap-3">
-            <EmSafetyLogo variant="dark" size="lg" />
-            <p className="font-sans text-[14px] text-[#41534b] max-w-md pt-2 leading-relaxed">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 pb-12 border-b border-blue-900/60">
+          {/* Col 1: Brand & Slogan (5 cols) */}
+          <div className="lg:col-span-5 flex flex-col gap-4">
+            <EmSafetyLogo
+              variant="light"
+              size="md"
+              showTagline={true}
+              showSlogan={true}
+              sloganPlacement="below"
+            />
+
+            <p className="font-sans text-[14px] text-slate-300 max-w-md leading-relaxed mt-1">
               Società accreditata di consulenza strategica e formazione per la salute, sicurezza nei luoghi di lavoro e conformità normativa d'impresa ai sensi del D.Lgs 81/08 e Accordi Stato-Regioni.
             </p>
             <div className="pt-2 flex flex-wrap gap-2">
-              <span className="inline-flex items-center px-2.5 py-1 bg-[#FBF5E6] text-[#946E19] border border-[#D1A751]/30 font-sans text-[11px] font-bold rounded-md">
-                Certificato D.Lgs 81/08 &amp; 2026 Ready
+              <span className="inline-flex items-center px-3 py-1 bg-[#07192e] text-amber-300 border border-amber-400/40 font-sans text-[12px] font-bold rounded-lg">
+                CERTIFICATO D.LGS 81/08 &amp; 2026 READY
               </span>
-              <span className="inline-flex items-center px-2.5 py-1 bg-[#d6ede4] text-[#00271e] font-sans text-[11px] font-bold rounded-md border border-[#b0d8c9]">
-                Centro Formazione Paritetico
+              <span className="inline-flex items-center px-3 py-1 bg-blue-900/60 text-white font-sans text-[12px] font-bold rounded-lg border border-blue-700">
+                CENTRO FORMAZIONE PARITETICO
               </span>
             </div>
           </div>
 
           {/* Col 2: Locations & Contacts (4 cols) */}
           <div className="lg:col-span-4 flex flex-col gap-2 select-text">
-            <span className="font-sans text-[11px] font-bold text-[#00271e] tracking-widest uppercase pb-2">
-              Sedi &amp; Contatti Ufficiali
+            <span className="font-sans text-[12px] font-bold text-amber-400 tracking-widest uppercase pb-2">
+              SEDI &amp; CONTATTI UFFICIALI
             </span>
-            <div className="font-sans text-[13px] text-[#414945] flex flex-col gap-2 leading-relaxed">
+            <div className="font-sans text-[14px] text-slate-300 flex flex-col gap-2.5 leading-relaxed">
               <p>
-                <strong className="text-[#141b2b] font-semibold">Sede Legale:</strong> 31100 Treviso (TV) Strada di Boiago, 11/b
+                <strong className="text-white font-semibold">Sede Legale:</strong> 31100 Treviso (TV) Strada di Boiago, 11/b
               </p>
               <p>
-                <strong className="text-[#141b2b] font-semibold">Sede Operativa:</strong> 20100 Milano (MI) Piazza Gae Aulenti Torre B
+                <strong className="text-white font-semibold">Sede Operativa:</strong> 20100 Milano (MI) Piazza Gae Aulenti Torre B
               </p>
               <p className="pt-1">
-                <strong className="text-[#141b2b] font-semibold">Tel:</strong>{' '}
-                <a className="hover:text-[#00271e] hover:underline transition-colors" href="tel:+3904221456565">
+                <strong className="text-white font-semibold">Tel:</strong>{' '}
+                <a className="text-amber-300 hover:text-white hover:underline transition-colors font-semibold" href="tel:+3904221456565">
                   +39 0422/1456565
                 </a>{' '}
-                | <strong className="text-[#141b2b] font-semibold">Cell:</strong>{' '}
-                <a className="hover:text-[#00271e] hover:underline transition-colors" href="tel:+393791341270">
+                | <strong className="text-white font-semibold">Cell:</strong>{' '}
+                <a className="text-amber-300 hover:text-white hover:underline transition-colors font-semibold" href="tel:+393791341270">
                   +39 3791341270
                 </a>
               </p>
               <p>
-                <strong className="text-[#141b2b] font-semibold">E-Mail:</strong>{' '}
-                <a className="hover:text-[#00271e] hover:underline transition-colors" href="mailto:info@emsafetygroup.it">
+                <strong className="text-white font-semibold">E-Mail:</strong>{' '}
+                <a className="text-slate-200 hover:text-amber-300 hover:underline transition-colors" href="mailto:info@emsafetygroup.it">
                   info@emsafetygroup.it
                 </a>
               </p>
               <p>
-                <strong className="text-[#141b2b] font-semibold">PEC:</strong>{' '}
-                <a className="hover:text-[#00271e] hover:underline transition-colors" href="mailto:emsafetygroup@pec.emsafetygroup.it">
+                <strong className="text-white font-semibold">PEC:</strong>{' '}
+                <a className="text-slate-200 hover:text-amber-300 hover:underline transition-colors" href="mailto:emsafetygroup@pec.emsafetygroup.it">
                   emsafetygroup@pec.emsafetygroup.it
                 </a>
               </p>
@@ -84,14 +91,30 @@ export default function Footer({ onNavigate, onOpenLegalModal }: FooterProps) {
 
           {/* Col 3: Navigation (3 cols) */}
           <div className="lg:col-span-3 flex flex-col gap-2">
-            <span className="font-sans text-[11px] font-bold text-[#00271e] tracking-widest uppercase pb-2">
-              Navigazione Istituzionale
+            <span className="font-sans text-[12px] font-bold text-amber-400 tracking-widest uppercase pb-2">
+              NAVIGAZIONE
             </span>
-            <ul className="font-sans text-[13px] text-[#414945] flex flex-col gap-2">
+            <ul className="font-sans text-[14px] text-slate-300 flex flex-col gap-2.5">
+              <li>
+                <button
+                  onClick={() => onNavigate('chi-siamo')}
+                  className="hover:text-amber-300 hover:underline transition-colors text-left cursor-pointer font-semibold text-white"
+                >
+                  Chi Siamo • Profilo Societario
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onNavigate('partner')}
+                  className="hover:text-amber-300 hover:underline transition-colors text-left cursor-pointer font-semibold text-amber-300"
+                >
+                  Diventa Nostro Partner
+                </button>
+              </li>
               <li>
                 <button
                   onClick={() => onNavigate('metodologia')}
-                  className="hover:text-[#00271e] hover:underline transition-colors text-left"
+                  className="hover:text-amber-300 hover:underline transition-colors text-left cursor-pointer"
                 >
                   Consulenza D.Lgs 81/08
                 </button>
@@ -99,41 +122,41 @@ export default function Footer({ onNavigate, onOpenLegalModal }: FooterProps) {
               <li>
                 <button
                   onClick={() => onNavigate('catalogo-corsi')}
-                  className="hover:text-[#00271e] hover:underline transition-colors text-left"
+                  className="hover:text-amber-300 hover:underline transition-colors text-left cursor-pointer"
                 >
                   Catalogo Formazione Accreditata
                 </button>
               </li>
               <li>
                 <button
-                  onClick={() => onNavigate('catalogo-corsi')}
-                  className="hover:text-[#00271e] hover:underline transition-colors text-left"
+                  onClick={() => onNavigate('simulatore-obblighi')}
+                  className="hover:text-amber-300 hover:underline transition-colors text-left cursor-pointer"
                 >
-                  Sessioni d'Aula e FAD
+                  Simulatore Sanzioni &amp; Sgravio INAIL
                 </button>
               </li>
               <li>
                 <button
-                  onClick={() => onNavigate('metodologia')}
-                  className="hover:text-[#00271e] hover:underline transition-colors text-left"
+                  onClick={() => onNavigate('casi-studio')}
+                  className="hover:text-amber-300 hover:underline transition-colors text-left cursor-pointer"
                 >
-                  Governance e Formatori
+                  Casi Studio &amp; Risultati
                 </button>
               </li>
               <li>
                 <button
                   onClick={() => onNavigate('fasi')}
-                  className="hover:text-[#00271e] hover:underline transition-colors text-left"
+                  className="hover:text-amber-300 hover:underline transition-colors text-left cursor-pointer"
                 >
-                  Archivio Tecnico e Normativo
+                  Metodologia in 4 Fasi
                 </button>
               </li>
               <li>
                 <button
                   onClick={() => onNavigate('preventivo-rapido')}
-                  className="hover:text-[#00271e] hover:underline transition-colors text-left"
+                  className="hover:text-amber-300 hover:underline transition-colors text-left cursor-pointer"
                 >
-                  Preventivi &amp; Convenzioni
+                  Preventivi &amp; Sedi Operative
                 </button>
               </li>
             </ul>
@@ -141,11 +164,11 @@ export default function Footer({ onNavigate, onOpenLegalModal }: FooterProps) {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 font-sans text-[12px] text-[#414945] select-text">
+        <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 font-sans text-[12.5px] text-slate-400 select-text">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-center md:text-left">
-            <span>© E.M Safety S.r.l. - Tutti i diritti riservati</span>
+            <span>© {new Date().getFullYear()} E.M SAFETY S.R.L. — TUTTI I DIRITTI RISERVATI</span>
             <span>•</span>
-            <span>P.Iva: 05613690261</span>
+            <span>P.IVA: 05613690261</span>
             <span>•</span>
             <span>N° REA: TV - 459102</span>
           </div>
@@ -153,27 +176,27 @@ export default function Footer({ onNavigate, onOpenLegalModal }: FooterProps) {
           <div className="flex flex-wrap items-center gap-4 font-sans text-[13px]">
             <button
               onClick={() => handleLegalClick('Privacy Policy')}
-              className="hover:text-[#00271e] hover:underline transition-colors"
+              className="hover:text-amber-300 hover:underline transition-colors cursor-pointer"
             >
               Privacy Policy
             </button>
             <button
               onClick={() => handleLegalClick('Cookie Policy')}
-              className="hover:text-[#00271e] hover:underline transition-colors"
+              className="hover:text-amber-300 hover:underline transition-colors cursor-pointer"
             >
               Cookie Policy
             </button>
             <button
               onClick={() => handleLegalClick('Termini e condizioni')}
-              className="hover:text-[#00271e] hover:underline transition-colors"
+              className="hover:text-amber-300 hover:underline transition-colors cursor-pointer"
             >
-              Termini e condizioni
+              Termini e Condizioni
             </button>
             <button
               onClick={() => handleLegalClick('Conformità normativa Accordo Stato-Regioni')}
-              className="hover:text-[#00271e] hover:underline transition-colors"
+              className="hover:text-amber-300 hover:underline transition-colors cursor-pointer"
             >
-              Conformità normativa Accordo Stato-Regioni
+              Conformità Accordo Stato-Regioni
             </button>
           </div>
         </div>

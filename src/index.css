@@ -11,49 +11,50 @@
     margin: 0;
     padding: 0;
     font-family: var(--font-sans);
-    color: #0d2119;
-    background-color: #fbfcfb;
+    color: #0f172a;
+    background-color: #ffffff;
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
-  /* Custom scrollbar */
+  /* Custom high-class corporate scrollbar */
   ::-webkit-scrollbar {
     width: 7px;
     height: 7px;
   }
   ::-webkit-scrollbar-track {
-    background: #f0f4f1;
+    background: #f8fafc;
   }
   ::-webkit-scrollbar-thumb {
-    background: #a9bbb1;
+    background: #94a3b8;
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #0f3e32;
+    background: #0b2545;
   }
 }
 
 .font-display {
   font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
 }
 
 .font-serif {
   font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
 }
 
 .font-sans {
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 }
 
-/* Elegant keyframe animations for motion graphics */
+/* Modern keyframe animations */
 @keyframes floatSubtle {
   0%, 100% {
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-8px);
+    transform: translateY(-6px);
   }
 }
 
@@ -63,8 +64,8 @@
     transform: scale(1);
   }
   50% {
-    opacity: 0.9;
-    transform: scale(1.08);
+    opacity: 0.8;
+    transform: scale(1.04);
   }
 }
 
@@ -77,12 +78,17 @@
   }
 }
 
-@keyframes shimmerGlint {
+@keyframes laserScan {
   0% {
-    background-position: -200% 0;
+    top: 0%;
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
   }
   100% {
-    background-position: 200% 0;
+    top: 100%;
+    opacity: 0.8;
   }
 }
 
@@ -91,36 +97,23 @@
 }
 
 .animate-pulse-glow {
-  animation: pulseGlow 3s ease-in-out infinite;
+  animation: pulseGlow 4s ease-in-out infinite;
 }
 
 .animate-radar-sweep {
-  animation: radarSweep 12s linear infinite;
+  animation: radarSweep 10s linear infinite;
 }
 
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-  background-size: 200% 100%;
-  animation: shimmerGlint 3s infinite;
+/* Premium executive card styling */
+.executive-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 20px -2px rgba(11, 37, 69, 0.06);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Material Symbols configuration */
-.material-symbols-outlined {
-  font-family: 'Material Symbols Outlined';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  display: inline-block;
-  white-space: nowrap;
-  word-wrap: normal;
-  direction: ltr;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: 'liga';
+.executive-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 12px 30px -4px rgba(11, 37, 69, 0.12), 0 0 15px rgba(245, 158, 11, 0.08);
+  transform: translateY(-2px);
 }
-
-

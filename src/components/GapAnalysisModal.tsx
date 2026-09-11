@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { X, CheckCircle2, AlertTriangle, ArrowRight, ShieldAlert, Sparkles } from 'lucide-react';
+import { X, ArrowRight } from 'lucide-react';
+import { motion } from 'motion/react';
+import { soundFX } from '../utils/audio';
 
 interface GapAnalysisModalProps {
   isOpen: boolean;
@@ -40,10 +42,13 @@ export default function GapAnalysisModal({
   const score = calculateRiskIndex();
 
   const handleComplete = () => {
+    soundFX.playLaser();
     setSubmitted(true);
+    soundFX.playChime();
   };
 
   const handleTransferToQuote = () => {
+    soundFX.playLaser();
     const summary = `Esito autovalutazione Gap Analysis: Conformità stimata al ${score}%. DVR: ${dvrStatus}, Formazione: ${trainingStatus}, Preposti: ${prepostiStatus}, Emergenze: ${emergencyTeam}.`;
     onRequestAssistance(summary);
     onClose();
@@ -53,25 +58,36 @@ export default function GapAnalysisModal({
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in-50"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200"
     >
-      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full border border-[#E5E7EB] overflow-hidden flex flex-col max-h-[90vh]">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 15 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 15 }}
+        className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full border border-slate-200 overflow-hidden flex flex-col max-h-[90vh] text-slate-800"
+      >
         {/* Header */}
-        <div className="bg-[#00271e] text-white p-6 relative">
+        <div className="bg-slate-50 p-6 border-b border-slate-200 relative">
           <button
-            onClick={onClose}
-            className="absolute top-4 right-4 p-1 text-white/80 hover:text-white rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+            onClick={() => {
+              soundFX.playBeep(450);
+              onClose();
+            }}
+            className="absolute top-4 right-4 p-2 text-slate-400 hover:text-[#0b2545] rounded-xl hover:bg-slate-100 transition-colors cursor-pointer"
             aria-label="Chiudi"
           >
             <X className="w-5 h-5" />
           </button>
-          <span className="px-2.5 py-0.5 bg-[#b5ede7] text-[#00201e] font-sans text-[11px] font-bold rounded inline-block mb-2">
-            Check-up Veloce di Conformità D.Lgs 81/08
-          </span>
-          <h2 className="font-serif text-[24px] sm:text-[28px] font-medium text-white">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="w-2 h-2 rounded-full bg-amber-500" />
+            <span className="px-3 py-1 bg-blue-50 text-[#0b2545] border border-blue-200 font-sans text-[11px] font-bold rounded-lg uppercase tracking-wider">
+              CHECK-UP VELOCE HSE • D.LGS 81/08
+            </span>
+          </div>
+          <h2 className="font-serif text-[24px] sm:text-[28px] font-bold text-[#0b2545]">
             Gap Analysis di Sicurezza Aziendale
           </h2>
-          <p className="font-sans text-[14px] text-[#7ca999] mt-1">
+          <p className="font-sans text-[14.5px] text-slate-600 mt-1">
             Rispondi a 4 semplici quesiti per una valutazione istantanea dei punti critici del tuo sistema HSE.
           </p>
         </div>
@@ -82,39 +98,48 @@ export default function GapAnalysisModal({
             <div className="space-y-6">
               {/* Question 1: DVR */}
               <div>
-                <label className="block font-sans text-[14px] font-bold text-[#00271e] mb-2">
+                <label className="block font-sans text-[12px] font-bold text-[#0b2545] mb-2 uppercase tracking-wider">
                   1. Stato del Documento di Valutazione dei Rischi (DVR):
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   <button
                     type="button"
-                    onClick={() => setDvrStatus('updated')}
-                    className={`p-3 rounded-lg border text-left font-sans text-[12px] transition-colors ${
+                    onClick={() => {
+                      soundFX.playBeep(750);
+                      setDvrStatus('updated');
+                    }}
+                    className={`p-3.5 rounded-xl border text-left font-sans text-[12px] transition-all cursor-pointer ${
                       dvrStatus === 'updated'
-                        ? 'border-[#0f3e32] bg-[#F2F5F2] font-semibold text-[#00271e]'
-                        : 'border-[#E5E7EB] hover:bg-[#F9FAF8] text-[#414945]'
+                        ? 'border-[#0b2545] bg-[#0b2545] font-bold text-white shadow-xs'
+                        : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
                     }`}
                   >
                     Aggiornato di recente (&lt; 1 anno)
                   </button>
                   <button
                     type="button"
-                    onClick={() => setDvrStatus('expired')}
-                    className={`p-3 rounded-lg border text-left font-sans text-[12px] transition-colors ${
+                    onClick={() => {
+                      soundFX.playBeep(750);
+                      setDvrStatus('expired');
+                    }}
+                    className={`p-3.5 rounded-xl border text-left font-sans text-[12px] transition-all cursor-pointer ${
                       dvrStatus === 'expired'
-                        ? 'border-[#0f3e32] bg-[#F2F5F2] font-semibold text-[#00271e]'
-                        : 'border-[#E5E7EB] hover:bg-[#F9FAF8] text-[#414945]'
+                        ? 'border-amber-500 bg-amber-50 font-bold text-amber-900 shadow-xs'
+                        : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
                     }`}
                   >
                     Non aggiornato / Modifiche recenti
                   </button>
                   <button
                     type="button"
-                    onClick={() => setDvrStatus('missing')}
-                    className={`p-3 rounded-lg border text-left font-sans text-[12px] transition-colors ${
+                    onClick={() => {
+                      soundFX.playBeep(750);
+                      setDvrStatus('missing');
+                    }}
+                    className={`p-3.5 rounded-xl border text-left font-sans text-[12px] transition-all cursor-pointer ${
                       dvrStatus === 'missing'
-                        ? 'border-[#0f3e32] bg-[#F2F5F2] font-semibold text-[#00271e]'
-                        : 'border-[#E5E7EB] hover:bg-[#F9FAF8] text-[#414945]'
+                        ? 'border-[#0b2545] bg-blue-100/80 font-bold text-[#0b2545] shadow-xs'
+                        : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
                     }`}
                   >
                     Da redigere / Non reperibile
@@ -124,39 +149,48 @@ export default function GapAnalysisModal({
 
               {/* Question 2: Training */}
               <div>
-                <label className="block font-sans text-[14px] font-bold text-[#00271e] mb-2">
+                <label className="block font-sans text-[12px] font-bold text-[#0b2545] mb-2 uppercase tracking-wider">
                   2. Formazione Generale e Specifica Lavoratori:
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   <button
                     type="button"
-                    onClick={() => setTrainingStatus('all')}
-                    className={`p-3 rounded-lg border text-left font-sans text-[12px] transition-colors ${
+                    onClick={() => {
+                      soundFX.playBeep(800);
+                      setTrainingStatus('all');
+                    }}
+                    className={`p-3.5 rounded-xl border text-left font-sans text-[12px] transition-all cursor-pointer ${
                       trainingStatus === 'all'
-                        ? 'border-[#0f3e32] bg-[#F2F5F2] font-semibold text-[#00271e]'
-                        : 'border-[#E5E7EB] hover:bg-[#F9FAF8] text-[#414945]'
+                        ? 'border-[#0b2545] bg-[#0b2545] font-bold text-white shadow-xs'
+                        : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
                     }`}
                   >
                     100% dipendenti formati e in regola
                   </button>
                   <button
                     type="button"
-                    onClick={() => setTrainingStatus('partial')}
-                    className={`p-3 rounded-lg border text-left font-sans text-[12px] transition-colors ${
+                    onClick={() => {
+                      soundFX.playBeep(800);
+                      setTrainingStatus('partial');
+                    }}
+                    className={`p-3.5 rounded-xl border text-left font-sans text-[12px] transition-all cursor-pointer ${
                       trainingStatus === 'partial'
-                        ? 'border-[#0f3e32] bg-[#F2F5F2] font-semibold text-[#00271e]'
-                        : 'border-[#E5E7EB] hover:bg-[#F9FAF8] text-[#414945]'
+                        ? 'border-amber-500 bg-amber-50 font-bold text-amber-900 shadow-xs'
+                        : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
                     }`}
                   >
                     Neoassunti o scadenze da regolarizzare
                   </button>
                   <button
                     type="button"
-                    onClick={() => setTrainingStatus('unknown')}
-                    className={`p-3 rounded-lg border text-left font-sans text-[12px] transition-colors ${
+                    onClick={() => {
+                      soundFX.playBeep(800);
+                      setTrainingStatus('unknown');
+                    }}
+                    className={`p-3.5 rounded-xl border text-left font-sans text-[12px] transition-all cursor-pointer ${
                       trainingStatus === 'unknown'
-                        ? 'border-[#0f3e32] bg-[#F2F5F2] font-semibold text-[#00271e]'
-                        : 'border-[#E5E7EB] hover:bg-[#F9FAF8] text-[#414945]'
+                        ? 'border-[#0b2545] bg-blue-100/80 font-bold text-[#0b2545] shadow-xs'
+                        : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
                     }`}
                   >
                     Situazione non monitorata
@@ -166,84 +200,102 @@ export default function GapAnalysisModal({
 
               {/* Question 3: Preposti */}
               <div>
-                <label className="block font-sans text-[14px] font-bold text-[#00271e] mb-2">
-                  3. Figura del Preposto (Legge 215/2021):
+                <label className="block font-sans text-[12px] font-bold text-[#0b2545] mb-2 uppercase tracking-wider">
+                  3. Figura del Preposto (Legge 215/2021 &amp; Accordo 2026):
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   <button
                     type="button"
-                    onClick={() => setPrepostiStatus('appointed')}
-                    className={`p-3 rounded-lg border text-left font-sans text-[12px] transition-colors ${
+                    onClick={() => {
+                      soundFX.playBeep(850);
+                      setPrepostiStatus('appointed');
+                    }}
+                    className={`p-3.5 rounded-xl border text-left font-sans text-[12px] transition-all cursor-pointer ${
                       prepostiStatus === 'appointed'
-                        ? 'border-[#0f3e32] bg-[#F2F5F2] font-semibold text-[#00271e]'
-                        : 'border-[#E5E7EB] hover:bg-[#F9FAF8] text-[#414945]'
+                        ? 'border-[#0b2545] bg-[#0b2545] font-bold text-white shadow-xs'
+                        : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
                     }`}
                   >
                     Nomine formali e formazione biennale attive
                   </button>
                   <button
                     type="button"
-                    onClick={() => setPrepostiStatus('toUpdate')}
-                    className={`p-3 rounded-lg border text-left font-sans text-[12px] transition-colors ${
+                    onClick={() => {
+                      soundFX.playBeep(850);
+                      setPrepostiStatus('toUpdate');
+                    }}
+                    className={`p-3.5 rounded-xl border text-left font-sans text-[12px] transition-all cursor-pointer ${
                       prepostiStatus === 'toUpdate'
-                        ? 'border-[#0f3e32] bg-[#F2F5F2] font-semibold text-[#00271e]'
-                        : 'border-[#E5E7EB] hover:bg-[#F9FAF8] text-[#414945]'
+                        ? 'border-amber-500 bg-amber-50 font-bold text-amber-900 shadow-xs'
+                        : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
                     }`}
                   >
                     Preposti di fatto senza nomina scritta
                   </button>
                   <button
                     type="button"
-                    onClick={() => setPrepostiStatus('none')}
-                    className={`p-3 rounded-lg border text-left font-sans text-[12px] transition-colors ${
+                    onClick={() => {
+                      soundFX.playBeep(850);
+                      setPrepostiStatus('none');
+                    }}
+                    className={`p-3.5 rounded-xl border text-left font-sans text-[12px] transition-all cursor-pointer ${
                       prepostiStatus === 'none'
-                        ? 'border-[#0f3e32] bg-[#F2F5F2] font-semibold text-[#00271e]'
-                        : 'border-[#E5E7EB] hover:bg-[#F9FAF8] text-[#414945]'
+                        ? 'border-[#0b2545] bg-blue-100/80 font-bold text-[#0b2545] shadow-xs'
+                        : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
                     }`}
                   >
-                    Nessuna figura individuata
+                    Nessun preposto formalizzato
                   </button>
                 </div>
               </div>
 
-              {/* Question 4: Emergenza */}
+              {/* Question 4: Emergency Team */}
               <div>
-                <label className="block font-sans text-[14px] font-bold text-[#00271e] mb-2">
-                  4. Squadra Primo Soccorso &amp; Antincendio (D.M. 02/09/2021):
+                <label className="block font-sans text-[12px] font-bold text-[#0b2545] mb-2 uppercase tracking-wider">
+                  4. Squadra Emergenze (Antincendio &amp; Primo Soccorso):
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   <button
                     type="button"
-                    onClick={() => setEmergencyTeam('trained')}
-                    className={`p-3 rounded-lg border text-left font-sans text-[12px] transition-colors ${
+                    onClick={() => {
+                      soundFX.playBeep(900);
+                      setEmergencyTeam('trained');
+                    }}
+                    className={`p-3.5 rounded-xl border text-left font-sans text-[12px] transition-all cursor-pointer ${
                       emergencyTeam === 'trained'
-                        ? 'border-[#0f3e32] bg-[#F2F5F2] font-semibold text-[#00271e]'
-                        : 'border-[#E5E7EB] hover:bg-[#F9FAF8] text-[#414945]'
+                        ? 'border-[#0b2545] bg-[#0b2545] font-bold text-white shadow-xs'
+                        : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
                     }`}
                   >
-                    Addetti sufficienti con attestati validi
+                    Addetti sufficienti con aggiornamenti in corso
                   </button>
                   <button
                     type="button"
-                    onClick={() => setEmergencyTeam('toRenew')}
-                    className={`p-3 rounded-lg border text-left font-sans text-[12px] transition-colors ${
+                    onClick={() => {
+                      soundFX.playBeep(900);
+                      setEmergencyTeam('toRenew');
+                    }}
+                    className={`p-3.5 rounded-xl border text-left font-sans text-[12px] transition-all cursor-pointer ${
                       emergencyTeam === 'toRenew'
-                        ? 'border-[#0f3e32] bg-[#F2F5F2] font-semibold text-[#00271e]'
-                        : 'border-[#E5E7EB] hover:bg-[#F9FAF8] text-[#414945]'
+                        ? 'border-amber-500 bg-amber-50 font-bold text-amber-900 shadow-xs'
+                        : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
                     }`}
                   >
-                    Triennio scaduto o numero addetti ridotto
+                    Aggiornamenti triennali/quinquennali scaduti
                   </button>
                   <button
                     type="button"
-                    onClick={() => setEmergencyTeam('none')}
-                    className={`p-3 rounded-lg border text-left font-sans text-[12px] transition-colors ${
+                    onClick={() => {
+                      soundFX.playBeep(900);
+                      setEmergencyTeam('none');
+                    }}
+                    className={`p-3.5 rounded-xl border text-left font-sans text-[12px] transition-all cursor-pointer ${
                       emergencyTeam === 'none'
-                        ? 'border-[#0f3e32] bg-[#F2F5F2] font-semibold text-[#00271e]'
-                        : 'border-[#E5E7EB] hover:bg-[#F9FAF8] text-[#414945]'
+                        ? 'border-[#0b2545] bg-blue-100/80 font-bold text-[#0b2545] shadow-xs'
+                        : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
                     }`}
                   >
-                    Nessun addetto nominato
+                    Squadra incompleta o assente
                   </button>
                 </div>
               </div>
@@ -251,96 +303,61 @@ export default function GapAnalysisModal({
               <button
                 type="button"
                 onClick={handleComplete}
-                className="w-full py-3 bg-[#0f3e32] text-white font-sans text-[14px] font-semibold rounded hover:bg-[#00271e] transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                className="w-full py-4 bg-[#0b2545] hover:bg-[#07192e] text-white font-sans text-[14px] font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer border-b-2 border-amber-400"
               >
-                <Sparkles className="w-4 h-4" />
-                <span>Calcola Esito e Priorità di Intervento</span>
+                <span>Elabora Indice di Conformità</span>
+                <ArrowRight className="w-4 h-4 text-amber-400" />
               </button>
             </div>
           ) : (
             <div className="space-y-6">
-              <div className="p-6 rounded-xl border border-[#E5E7EB] bg-[#F9FAF8] text-center">
-                <span className="font-sans text-[12px] font-bold text-[#5E8276] uppercase tracking-wider block mb-1">
-                  Indice di Conformità Stimato
+              {/* Score Visual */}
+              <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl text-center">
+                <span className="font-sans text-[12px] text-slate-500 uppercase tracking-widest block mb-1 font-bold">
+                  INDICE STIMATO DI CONFORMITÀ AZIENDALE
                 </span>
-                <div className="font-serif text-[48px] font-bold text-[#00271e] leading-tight">
+                <div className="text-[54px] font-serif font-bold text-[#0b2545] my-2">
                   {score}%
                 </div>
-                <div className="flex items-center justify-center gap-2 mt-1">
-                  {score >= 80 ? (
-                    <span className="inline-flex items-center gap-1 text-[#0f3e32] text-[13px] font-semibold">
-                      <CheckCircle2 className="w-4 h-4" /> Rischio Basso - Buona tutela complessiva
-                    </span>
-                  ) : score >= 55 ? (
-                    <span className="inline-flex items-center gap-1 text-[#946E19] text-[13px] font-semibold">
-                      <AlertTriangle className="w-4 h-4" /> Rischio Moderato - Vulnerabilità sanzionabili
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center gap-1 text-[#991B1B] text-[13px] font-semibold">
-                      <ShieldAlert className="w-4 h-4" /> Rischio Elevato - Elevata esposizione sanzionatoria
-                    </span>
-                  )}
+                <div className="w-full bg-slate-200 h-3 rounded-full overflow-hidden max-w-md mx-auto">
+                  <div
+                    className={`h-full transition-all duration-700 ${
+                      score > 80 ? 'bg-[#0b2545]' : score > 50 ? 'bg-amber-500' : 'bg-amber-600'
+                    }`}
+                    style={{ width: `${score}%` }}
+                  ></div>
                 </div>
+
+                <p className="font-sans text-[14px] text-slate-600 mt-4 max-w-md mx-auto leading-relaxed">
+                  {score > 80
+                    ? 'Il tuo assetto è in un buon intervallo di conformità. Consigliamo comunque un checkup periodico sulle modifiche del nuovo Accordo 2026.'
+                    : score > 50
+                    ? 'Attenzione: emergono scostamenti normativi che espongono l’azienda a possibili prescrizioni e sanzioni in caso di controllo ASL/ITL.'
+                    : 'Criticità elevata: il mancato adempimento di DVR o formazione espone gli amministratori a rischi di responsabilità penale immediata.'}
+                </p>
               </div>
 
-              <div className="space-y-2">
-                <h4 className="font-sans text-[14px] font-bold text-[#00271e]">
-                  Azioni raccomandate dai tecnici E.M Safety:
-                </h4>
-                <ul className="space-y-1.5 font-sans text-[13px] text-[#414945]">
-                  {dvrStatus !== 'updated' && (
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#991B1B] font-bold">•</span>
-                      <span>Revisione prioritaria del Documento di Valutazione dei Rischi con sopralluogo tecnico.</span>
-                    </li>
-                  )}
-                  {trainingStatus !== 'all' && (
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#991B1B] font-bold">•</span>
-                      <span>Iscrizione immediata dei lavoratori privi di attestato al corso Generale + Specifica.</span>
-                    </li>
-                  )}
-                  {prepostiStatus !== 'appointed' && (
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#946E19] font-bold">•</span>
-                      <span>Formalizzazione dell'incarico preposti con corso dedicato 8 ore conforme L. 215/2021.</span>
-                    </li>
-                  )}
-                  {emergencyTeam !== 'trained' && (
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#946E19] font-bold">•</span>
-                      <span>Sessione pratica antincendio e primo soccorso per gli incaricati d'emergenza.</span>
-                    </li>
-                  )}
-                  {score === 100 && (
-                    <li className="flex items-start gap-2 text-[#0f3e32]">
-                      <span>Ottima gestione! Si raccomanda di mantenere attivo il monitoraggio delle scadenze periodiche.</span>
-                    </li>
-                  )}
-                </ul>
-              </div>
-
-              <div className="pt-2 flex flex-col sm:flex-row gap-3">
-                <button
-                  type="button"
-                  onClick={handleTransferToQuote}
-                  className="flex-1 py-2.5 bg-[#0f3e32] text-white font-sans text-[13px] font-semibold rounded hover:bg-[#00271e] transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
-                >
-                  <span>Richiedi proposta correttiva su misura</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
+              <div className="flex flex-col sm:flex-row items-center gap-3">
                 <button
                   type="button"
                   onClick={() => setSubmitted(false)}
-                  className="px-4 py-2.5 bg-white text-[#414945] font-sans text-[13px] rounded border border-[#E5E7EB] hover:bg-[#F2F5F2] transition-colors cursor-pointer"
+                  className="w-full sm:w-1/3 py-3 px-4 bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 rounded-xl font-sans text-[13px] font-bold cursor-pointer transition-colors"
                 >
                   Ricalcola
+                </button>
+                <button
+                  type="button"
+                  onClick={handleTransferToQuote}
+                  className="w-full sm:w-2/3 py-3.5 px-4 bg-[#0b2545] hover:bg-[#07192e] text-white font-sans text-[13.5px] font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer border-b-2 border-amber-400"
+                >
+                  <span>Richiedi Audit Correttivo Gratuito</span>
+                  <ArrowRight className="w-4 h-4 text-amber-400" />
                 </button>
               </div>
             </div>
           )}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
